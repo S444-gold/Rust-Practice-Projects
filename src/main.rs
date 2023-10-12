@@ -1,7 +1,7 @@
 use std::io;
 
 fn pounds_to_kilogram(pounds_value: f32) -> f32{
-    pounds_value * 2.20462
+    pounds_value / 2.20462
 }
 
 fn inches_to_metres(inches_value: f32) -> f32{
@@ -33,17 +33,31 @@ fn main() {
     loop{
         println!("BMI calculator");
         println!("Input your weight(KG), and your height(M)");
-        println!("Enter 'M' if you want to use any of our measurement unit converter or click on Enter to continue");
+        println!("Enter 'M' if you want to use any of our measurement unit converter or Enter 'C' to continue");
         let mut choice = String::new();
         io::stdin()
             .read_line(&mut choice)
             .expect("Failed to read line");
         let choice:char = choice.trim().parse().expect("Invalid input");
         if choice == 'M'{
-
+            println!("Enter (W) for weight unit converter or (H) for height unit converter");
+            let mut converter_choice = String::new();
+            io::stdin()
+                .read_line(&mut converter_choice)
+                .expect("Failed to read line");
+            let converter_choice:char = converter_choice.trim().parse().expect("Invalid input");
+            if converter_choice == 'W'{
+                println!("Input your weight in pounds(lbs) to be converted to Kilograms(KG): ");
+                let mut lbs_weight = String::new();
+                io::stdin()
+                    .read_line(&mut lbs_weight)
+                    .expect("Failed to read line");
+                let lbs_weight:f32 = lbs_weight.trim().parse().expect("Invalid input, please enter a positive integer");
+                println!("{}(lbs) is {:.1}KG", lbs_weight, pounds_to_kilogram(lbs_weight))
+            }
         }
 
-        else if choice == ' '{
+        else if choice == 'C'{
             println!("Weight(KG): ");
             let mut user_weight = String::new();
             io::stdin()
