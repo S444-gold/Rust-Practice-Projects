@@ -33,7 +33,7 @@ fn main() {
     loop {
         println!("BMI calculator");
         println!("Input your weight(KG), and your height(M)");
-        println!("Enter 'M' if you want to use any of our measurement unit converter or Enter 'C' to continue");
+        println!("Enter 'M' if you want to use any of our measurement unit converter or Enter 'C' to continue with the BMI calculation");
         
         let mut choice = String::new();
         io::stdin()
@@ -56,8 +56,11 @@ fn main() {
                     .read_line(&mut lbs_weight)
                     .expect("Failed to read line");
                 let lbs_weight: f32 = lbs_weight.trim().parse().expect("Invalid input, please enter a positive integer");
-                println!("{}(lbs) is {:.1}KG", lbs_weight, pounds_to_kilogram(lbs_weight))
+                {println!("{}(lbs) is {:.1}KG", lbs_weight, pounds_to_kilogram(lbs_weight));
+                    break;}
+                    
             } else if converter_choice == 'H' {
+                //Conversion of some length measurement unit to metre
                 println!("Enter:\n(I)to convert from inches to meters\n(F)to convert from foot to metres\n(C)to convert from centimetre to metre");
                 let mut height_choice = String::new();
                 io::stdin()
@@ -72,7 +75,9 @@ fn main() {
                         .read_line(&mut height_inches)
                         .expect("Failed to read line!");
                     let height_inches = height_inches.trim().parse().expect("Invalid Input");
-                    println!("{}\" is {}m", height_inches, inches_to_metres(height_inches))
+                    {println!("{}\" is {}m", height_inches, inches_to_metres(height_inches));
+                        break;}
+
                 } else if height_choice == 'F' {
                     println!("Input your height in feet to be converted to meters: ");
                     let mut height_foot = String::new();
@@ -80,7 +85,8 @@ fn main() {
                         .read_line(&mut height_foot)
                         .expect("Failed to read line!");
                     let height_foot = height_foot.trim().parse().expect("Invalid Input");
-                    println!("{}' is {}m", height_foot, foot_to_metres(height_foot))
+                    {println!("{}' is {}m", height_foot, foot_to_metres(height_foot));
+                        break}
                 } else if height_choice == 'C' {
                     println!("Input your height in centimeters to be converted to meters: ");
                     let mut height_cm = String::new();
@@ -88,9 +94,11 @@ fn main() {
                         .read_line(&mut height_cm)
                         .expect("Failed to read line!");
                     let height_cm = height_cm.trim().parse().expect("Invalid Input");
-                    println!("{}cm is {}m", height_cm, centimeter_to_metre(height_cm))
+                    {println!("{}cm is {}m", height_cm, centimeter_to_metre(height_cm));
+                        break;}
                 }
             }
+            //Continuation of the BMI code, incase user wants to jump straight into it
         } else if choice == 'C' {
             println!("Weight(KG): ");
             let mut user_weight = String::new();
@@ -111,7 +119,21 @@ fn main() {
                 height: user_height,
             };
             
-            println!("Your BMI index based on your weight of {}, and height of {} is {:.2}", user_weight, user_height, user_measurement.converter());
+            {println!("Your BMI index based on your weight of {}, and height of {} is {:.2}", user_weight, user_height, user_measurement.converter(),);
+                
+                //For output based on the users BMI score
+                if user_measurement.converter() < 18.5{
+                    println!("Underweight!!!!!")
+                }
+
+                else if user_measurement.converter() < 24.9{
+                    println!("Healthy Weight!")
+                }
+                
+                else{
+                    println!("OVERWEIGHT!!!!!")
+                }
+                break;}
         }
     }
 }
