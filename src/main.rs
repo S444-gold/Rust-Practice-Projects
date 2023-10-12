@@ -33,31 +33,39 @@ fn main() {
     loop{
         println!("BMI calculator");
         println!("Input your weight(KG), and your height(M)");
-        println!("Enter 'converter' if you want to use any of our measurement unit converter or click on Enter to continue");
-        println!("Weight(KG): ");
-    
-        let mut user_weight = String::new();
+        println!("Enter 'M' if you want to use any of our measurement unit converter or click on Enter to continue");
+        let mut choice = String::new();
         io::stdin()
-            .read_line(&mut user_weight)
+            .read_line(&mut choice)
             .expect("Failed to read line");
-        let user_weight:f32 = user_weight.trim().parse().expect("Invalid input, please enter a positive integer");
-    
-        println!("Height(M): ");
-        let mut user_height = String::new();
-        io::stdin()
-            .read_line(&mut user_height)
-            .expect("Failed to read line");
-        let user_height:f32 = user_height.trim().parse().expect("Invalid input, please enter a positive integer");
-    
-        let user_measurement = Measurements{
-            weight: user_weight,
-            height: user_height
-        };
-    
-        println!("Your BMI index based on your weight of {}, and height of {} is {:.2}", user_weight, user_height, user_measurement.converter())
+        let choice:char = choice.trim().parse().expect("Invalid input");
+        if choice == 'M'{
 
+        }
 
-
+        else if choice == ' '{
+            println!("Weight(KG): ");
+            let mut user_weight = String::new();
+            io::stdin()
+                .read_line(&mut user_weight)
+                .expect("Failed to read line");
+            let user_weight:f32 = user_weight.trim().parse().expect("Invalid input, please enter a positive integer");
+        
+            println!("Height(M): ");
+            let mut user_height = String::new();
+            io::stdin()
+                .read_line(&mut user_height)
+                .expect("Failed to read line");
+            let user_height:f32 = user_height.trim().parse().expect("Invalid input, please enter a positive integer");
+        
+            let user_measurement = Measurements{
+                weight: user_weight,
+                height: user_height
+            };
+        
+            println!("Your BMI index based on your weight of {}, and height of {} is {:.2}", user_weight, user_height, user_measurement.converter())
+        
+        }      
         
     }
 
