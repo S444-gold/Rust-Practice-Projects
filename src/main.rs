@@ -16,6 +16,36 @@ fn centimeter_to_metre(centimeter_value: f32) -> f32 {
     centimeter_value / 100.0
 }
 
+fn get_float_input(prompt: &str) -> f32{
+    loop{
+        println!("{}", prompt);
+        let mut float_input = String::new();
+        io::stdin()
+            .read_line(&mut float_input)
+            .expect("Failed to read line");
+
+        match float_input.trim().parse::<f32>(){
+            Ok(value) if value > 0.0 => return value,
+            _ => println!("Please enter a positive integer")
+        };
+    }
+}//simple function that can be passed around to take user 'float' input, to make code shorter and readable
+
+fn get_char_input(prompt: &str) -> char{
+    loop{
+        println!("{}", prompt);
+        let mut char_input = String::new();
+        io::stdin()
+            .read_line(&mut char_input)
+            .expect("Failed to read line");
+
+        match char_input.trim().parse::<char>(){
+            Ok(input) => return input,
+            _ => println!("Wrong input, try again")
+        }
+    }
+}//simple function that can be passed around to take user 'char' input, to make code shorter and readable 
+
 #[derive(Debug)]
 struct Measurements {
     weight: f32,
@@ -32,94 +62,47 @@ impl Measurements {
 fn main() {
     loop {
         println!("BMI calculator");
-        println!("Input your weight(KG), and your height(M)");
-        println!("Enter 'M' if you want to use any of our measurement unit converter or Enter 'C' to continue with the BMI calculation");
-        
-        let mut choice = String::new();
-        io::stdin()
-            .read_line(&mut choice)
-            .expect("Failed to read line");
-        let choice: char = choice.trim().parse().expect("Invalid input");
+        println!("A measurement unit converter as being added just incase you don't know your weight or height measurement in our preferred Units");
+        let choice = get_char_input("Enter 'M' to use measurement unit converter\nEnter 'B' to continue with the BMI calculation");
         
         if choice == 'M' {
-            println!("Enter (W) for weight unit converter or (H) for height unit converter");
-            let mut converter_choice = String::new();
-            io::stdin()
-                .read_line(&mut converter_choice)
-                .expect("Failed to read line");
-            let converter_choice: char = converter_choice.trim().parse().expect("Invalid input");
-            
+            let  converter_choice = get_char_input("Enter (W) for weight unit converter or (H) for height unit converter");
+
             if converter_choice == 'W' {
-                println!("Input your weight in pounds(lbs) to be converted to Kilograms(KG): ");
-                let mut lbs_weight = String::new();
-                io::stdin()
-                    .read_line(&mut lbs_weight)
-                    .expect("Failed to read line");
-                let lbs_weight: f32 = lbs_weight.trim().parse().expect("Invalid input, please enter a positive integer");
+                let lbs_weight = get_float_input("Input your weight in pounds(lbs) to be converted to Kilograms(KG): ");
                 {println!("{}(lbs) is {:.1}KG", lbs_weight, pounds_to_kilogram(lbs_weight));
                     break;}
                     
             } else if converter_choice == 'H' {
                 //Conversion of some length measurement unit to metre
-                println!("Enter:\n(I)to convert from inches to meters\n(F)to convert from foot to metres\n(C)to convert from centimetre to metre");
-                let mut height_choice = String::new();
-                io::stdin()
-                    .read_line(&mut height_choice)
-                    .expect("Failed to read line");
-                let height_choice: char = height_choice.trim().parse().expect("Invalid input, please enter a positive integer");
+                let height_choice = get_char_input("Enter:\n(I)to convert from inches to meters\n(F)to convert from foot to metres\n(C)to convert from centimetre to metre");
                 
                 if height_choice == 'I' {
-                    println!("Input your height in inches to be converted to meters: ");
-                    let mut height_inches = String::new();
-                    io::stdin()
-                        .read_line(&mut height_inches)
-                        .expect("Failed to read line!");
-                    let height_inches = height_inches.trim().parse().expect("Invalid Input");
-                    {println!("{}\" is {}m", height_inches, inches_to_metres(height_inches));
+                    let height_inches = get_float_input("Input your height in inches to be converted to meters: ");
+                    {println!("{}\" is {:.2}m", height_inches, inches_to_metres(height_inches));
                         break;}
 
                 } else if height_choice == 'F' {
-                    println!("Input your height in feet to be converted to meters: ");
-                    let mut height_foot = String::new();
-                    io::stdin()
-                        .read_line(&mut height_foot)
-                        .expect("Failed to read line!");
-                    let height_foot = height_foot.trim().parse().expect("Invalid Input");
-                    {println!("{}' is {}m", height_foot, foot_to_metres(height_foot));
+                    let height_foot = get_float_input("Input your height in feet to be converted to meters: ");
+                    {println!("{}ft' is {:.2}m", height_foot, foot_to_metres(height_foot));
                         break}
                 } else if height_choice == 'C' {
-                    println!("Input your height in centimeters to be converted to meters: ");
-                    let mut height_cm = String::new();
-                    io::stdin()
-                        .read_line(&mut height_cm)
-                        .expect("Failed to read line!");
-                    let height_cm = height_cm.trim().parse().expect("Invalid Input");
-                    {println!("{}cm is {}m", height_cm, centimeter_to_metre(height_cm));
+                    let height_cm = get_float_input("Input your height in centimeters to be converted to meters: ");
+                    {println!("{}cm is {:.2}m", height_cm, centimeter_to_metre(height_cm));
                         break;}
                 }
             }
             //Continuation of the BMI code, incase user wants to jump straight into it
         } else if choice == 'C' {
-            println!("Weight(KG): ");
-            let mut user_weight = String::new();
-            io::stdin()
-                .read_line(&mut user_weight)
-                .expect("Failed to read line");
-            let user_weight: f32 = user_weight.trim().parse().expect("Invalid input, please enter a positive integer");
-        
-            println!("Height(M): ");
-            let mut user_height = String::new();
-            io::stdin()
-                .read_line(&mut user_height)
-                .expect("Failed to read line");
-            let user_height: f32 = user_height.trim().parse().expect("Invalid input, please enter a positive integer");
-        
+            println!("Kindly enter your weight in Kilograms and height in metres");
+            let user_weight = get_float_input("Weight(KG)");
+            let user_height = get_float_input("Height(M)");
             let user_measurement = Measurements {
                 weight: user_weight,
                 height: user_height,
             };
             
-            {println!("Your BMI index based on your weight of {}, and height of {} is {:.2}", user_weight, user_height, user_measurement.converter(),);
+            {println!("Your BMI index based on your weight of {}kg, and height of {}m is {:.2}", user_weight, user_height, user_measurement.converter(),);
                 
                 //For output based on the users BMI score
                 if user_measurement.converter() < 18.5{
